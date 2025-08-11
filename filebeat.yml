@@ -133,8 +133,9 @@ filebeat.inputs:
 
 # Output configuration for Elastic Cloud Serverless
 output.elasticsearch:
-  hosts: ["${ELASTICSEARCH_HOST:https://localhost:9200}"]
-  api_key: "${ELASTICSEARCH_API_KEY}"
+  hosts: ["serverlessobservability-01-db07c4.es.us-central1.gcp.elastic.cloud:443"]
+  api_key: "LKyol5gBMB4lIUGC5CYg:Mdvhre4QoLu6US2ePn-YFg"
+  protocol: "https"
   
   # Data stream configuration for Elastic Streams
   index: "logs-elastic-streams-demo"
@@ -276,5 +277,5 @@ logging.to_stderr: true
 monitoring:
   enabled: true
   elasticsearch:
-    hosts: ["${ELASTICSEARCH_HOST:https://localhost:9200}"]
-    api_key: "${ELASTICSEARCH_API_KEY}"
+    hosts: ["serverlessobservability-01-db07c4.es.us-central1.gcp.elastic.cloud:443"]
+    api_key: "LKyol5gBMB4lIUGC5CYg:Mdvhre4QoLu6US2ePn-YFg"

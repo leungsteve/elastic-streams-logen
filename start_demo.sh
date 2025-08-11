@@ -40,6 +40,11 @@ echo "Log generator started (PID: $LOG_PID)"
 
 # Start Filebeat with RAW configuration (no field extraction)
 echo "Starting Filebeat with raw log configuration..."
+
+# Stop and remove existing container if it exists
+docker stop filebeat-streams 2>/dev/null || true
+docker rm filebeat-streams 2>/dev/null || true
+
 docker run -d --name filebeat-streams \
   --env ELASTICSEARCH_HOST="$ELASTICSEARCH_HOST" \
   --env ELASTICSEARCH_API_KEY="$ELASTICSEARCH_API_KEY" \

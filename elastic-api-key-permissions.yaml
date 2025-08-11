@@ -1,0 +1,48 @@
+{
+  "filebeat_writer_role": {
+    "cluster": [
+      "monitor",
+      "manage_index_templates",
+      "manage_ingest_pipelines",
+      "manage_pipeline",
+      "read_pipeline",
+      "manage"
+    ],
+    "indices": [
+      {
+        "names": [
+          "filebeat-*",
+          "logs-*",
+          "metrics-*",
+          ".ds-logs-*",
+          "elastic-streams-demo-*",
+          "logs-elastic-streams-demo*"
+        ],
+        "privileges": [
+          "create_index",
+          "write",
+          "create_doc",
+          "create",
+          "index",
+          "auto_configure",
+          "manage",
+          "delete",
+          "delete_index",
+          "monitor",
+          "read",
+          "view_index_metadata",
+          "maintenance",
+          "manage_data_stream_lifecycle",
+          "all"
+        ],
+        "allow_restricted_indices": false
+      }
+    ],
+    "applications": [],
+    "run_as": [],
+    "metadata": {},
+    "transient_metadata": {
+      "enabled": true
+    }
+  }
+}
