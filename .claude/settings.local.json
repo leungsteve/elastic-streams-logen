@@ -8,7 +8,9 @@
       "Bash(python:*)",
       "Bash(docker logs:*)",
       "Bash(chmod:*)",
-      "Bash(./start_demo.sh:*)"
+      "Bash(./start_demo.sh:*)",
+      "Bash(docker stop:*)",
+      "Bash(docker rm:*)"
     ],
     "deny": []
   }

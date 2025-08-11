@@ -1,0 +1,202 @@
+filebeat.inputs:
+# Nginx logs - Common Log Format for field extraction demo
+- type: filestream
+  enabled: true
+  id: nginx-input
+  paths:
+    - ./logs/nginx/*.log
+  fields:
+    service: nginx
+    log_type: nginx
+    environment: demo
+  fields_under_root: true
+  data_stream:
+    dataset: nginx
+    namespace: demo
+  multiline.pattern: '^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'
+  multiline.negate: true
+  multiline.match: after
+
+# Java application logs - JSON format
+- type: filestream
+  enabled: true
+  id: java-app-input
+  paths:
+    - ./logs/java_app/*.log
+  fields:
+    service: user-service
+    log_type: java_app
+    environment: demo
+  fields_under_root: true
+  data_stream:
+    dataset: java-app
+    namespace: demo
+  json.keys_under_root: true
+  json.add_error_key: true
+  json.message_key: message
+
+# Kubernetes logs - JSON format
+- type: filestream
+  enabled: true
+  id: kubernetes-input
+  paths:
+    - ./logs/kubernetes/*.log
+  fields:
+    service: kubernetes
+    log_type: kubernetes
+    environment: demo
+  fields_under_root: true
+  data_stream:
+    dataset: kubernetes
+    namespace: demo
+  json.keys_under_root: true
+  json.add_error_key: true
+
+# System access logs - Syslog format
+- type: filestream
+  enabled: true
+  id: system-access-input
+  paths:
+    - ./logs/system_access/*.log
+  fields:
+    service: sshd
+    log_type: system_access
+    environment: demo
+  fields_under_root: true
+  data_stream:
+    dataset: system-access
+    namespace: demo
+
+# E-commerce transaction logs - JSON format
+- type: filestream
+  enabled: true
+  id: ecommerce-input
+  paths:
+    - ./logs/ecommerce/*.log
+  fields:
+    service: payment-service
+    log_type: ecommerce
+    environment: demo
+  fields_under_root: true
+  data_stream:
+    dataset: ecommerce
+    namespace: demo
+  json.keys_under_root: true
+  json.add_error_key: true
+
+# API Gateway logs - JSON format
+- type: filestream
+  enabled: true
+  id: api-gateway-input
+  paths:
+    - ./logs/api_gateway/*.log
+  fields:
+    service: api-gateway
+    log_type: api_gateway
+    environment: demo
+  fields_under_root: true
+  data_stream:
+    dataset: api-gateway
+    namespace: demo
+  json.keys_under_root: true
+  json.add_error_key: true
+
+# Database logs - Text format with custom parsing
+- type: filestream
+  enabled: true
+  id: database-input
+  paths:
+    - ./logs/database/*.log
+  fields:
+    service: postgres
+    log_type: database
+    environment: demo
+  fields_under_root: true
+  data_stream:
+    dataset: database
+    namespace: demo
+
+# Docker container logs - JSON format
+- type: filestream
+  enabled: true
+  id: docker-input
+  paths:
+    - ./logs/docker/*.log
+  fields:
+    service: docker
+    log_type: docker
+    environment: demo
+  fields_under_root: true
+  data_stream:
+    dataset: docker
+    namespace: demo
+  json.keys_under_root: true
+  json.add_error_key: true
+
+# CDN logs - Access log format
+- type: filestream
+  enabled: true
+  id: cdn-input
+  paths:
+    - ./logs/cdn/*.log
+  fields:
+    service: cloudflare
+    log_type: cdn
+    environment: demo
+  fields_under_root: true
+  data_stream:
+    dataset: cdn
+    namespace: demo
+
+# CI/CD pipeline logs - JSON format
+- type: filestream
+  enabled: true
+  id: cicd-input
+  paths:
+    - ./logs/cicd/*.log
+  fields:
+    service: jenkins
+    log_type: cicd
+    environment: demo
+  fields_under_root: true
+  data_stream:
+    dataset: cicd
+    namespace: demo
+  json.keys_under_root: true
+  json.add_error_key: true
+
+# Output configuration for Elastic Cloud Serverless
+output.elasticsearch:
+  hosts: ["${ELASTICSEARCH_HOST}"]
+  api_key: "${ELASTICSEARCH_API_KEY}"
+  protocol: "https"
+  
+  # Service-specific routing using log_type field
+  # This field is available at output time
+  index: "logs-%{[log_type]}-demo"
+
+# Template settings - disabled for Elastic Serverless
+setup.template.enabled: false
+
+# Index lifecycle management disabled for demo
+setup.ilm.enabled: false
+
+# Processors - REMOVED for Streams demo
+# Field extraction will be done in Elastic Streams UI
+
+# Logging configuration
+logging.level: info
+logging.to_files: true
+logging.files:
+  path: /var/log/filebeat
+  name: filebeat
+  keepfiles: 7
+  permissions: 0644
+logging.to_stderr: true
+
+# Monitoring configuration
+monitoring:
+  enabled: true
+  elasticsearch:
+    hosts: ["${ELASTICSEARCH_HOST}"]
+    api_key: "${ELASTICSEARCH_API_KEY}"
