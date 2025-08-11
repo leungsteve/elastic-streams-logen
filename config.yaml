@@ -1,0 +1,94 @@
+log_generator:
+  # Log generation rates (logs per second)
+  rates:
+    nginx: 5
+    java_app: 3
+    kubernetes: 2
+    system_access: 4
+    ecommerce: 2
+    api_gateway: 6
+    database: 1
+    docker: 2
+    cdn: 4
+    cicd: 0.1  # Build logs are less frequent
+
+  # Infrastructure simulation
+  infrastructure:
+    hosts:
+      - name: web-server-01
+        ip: 10.0.1.10
+        services: [nginx, java_app]
+      - name: web-server-02
+        ip: 10.0.1.11
+        services: [nginx, java_app]
+      - name: k8s-node-01
+        ip: 10.0.2.20
+        services: [kubernetes, docker]
+      - name: k8s-node-02
+        ip: 10.0.2.21
+        services: [kubernetes, docker]
+      - name: db-server-01
+        ip: 10.0.3.30
+        services: [database]
+      - name: api-gateway-01
+        ip: 10.0.4.40
+        services: [api_gateway]
+      - name: cdn-edge-01
+        ip: 203.0.113.10
+        services: [cdn]
+
+  # Security scenarios
+  security:
+    attack_patterns:
+      brute_force:
+        enabled: true
+        intensity: 0.1  # 10% of login attempts are attacks
+        source_ips: 
+          - 192.168.100.50
+          - 203.0.113.100
+          - 172.16.0.200
+        duration_minutes: 5
+        interval_minutes: 30
+      
+      api_abuse:
+        enabled: true
+        intensity: 0.05
+        target_endpoints: 
+          - /api/auth/login
+          - /api/payments
+          - /api/users
+        rate_limit_threshold: 100
+
+  # Business scenarios
+  business:
+    peak_hours: 
+      start: "09:00"
+      end: "17:00"
+      multiplier: 2.5
+    
+    failure_scenarios:
+      payment_gateway_outage:
+        probability: 0.02
+        duration_minutes: 10
+      database_slowdown:
+        probability: 0.01
+        duration_minutes: 15
+        slowdown_factor: 5
+
+  # Output configuration
+  output:
+    base_directory: "./logs"
+    file_rotation: 
+      max_size_mb: 100
+      backup_count: 3
+    formats:
+      nginx: "text"  # Common Log Format
+      java_app: "json"
+      kubernetes: "json"
+      system_access: "text"
+      ecommerce: "json"
+      api_gateway: "json"
+      database: "text"
+      docker: "json"
+      cdn: "text"
+      cicd: "json"

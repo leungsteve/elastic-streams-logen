@@ -1,0 +1,49 @@
+# Filebeat configuration for Elastic Streams field extraction demo
+# This configuration sends RAW logs without pre-processing
+# so users can practice field extraction in the Elastic Streams UI
+
+filebeat.inputs:
+# Send all logs as raw text - perfect for Elastic Streams field extraction practice
+- type: log
+  enabled: true
+  paths:
+    - ./logs/nginx/*.log
+    - ./logs/java_app/*.log  
+    - ./logs/kubernetes/*.log
+    - ./logs/system_access/*.log
+    - ./logs/ecommerce/*.log
+    - ./logs/api_gateway/*.log
+    - ./logs/database/*.log
+    - ./logs/docker/*.log
+    - ./logs/cdn/*.log
+    - ./logs/cicd/*.log
+  fields:
+    environment: demo
+  fields_under_root: false
+  # NO JSON parsing - let Elastic Streams extract fields
+  # NO dissect processors - let users practice extraction
+  # NO grok patterns - raw logs for field extraction demo
+
+# Output to Elasticsearch
+output.elasticsearch:
+  hosts: ["${ELASTICSEARCH_HOST:https://localhost:9200}"]
+  api_key: "${ELASTICSEARCH_API_KEY}"
+  
+  # Send to a data stream optimized for Streams field extraction
+  index: "logs-streams-demo-default"
+
+# Minimal setup - no field extraction templates
+setup.template.enabled: false
+setup.ilm.enabled: false
+
+# NO PROCESSORS - this is key for the demo!
+# Users will add field extraction in Elastic Streams UI
+
+# Logging
+logging.level: info
+logging.to_files: false
+logging.to_stderr: true
+
+# Disable monitoring to keep it simple
+monitoring:
+  enabled: false

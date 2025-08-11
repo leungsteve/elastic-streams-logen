@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.elastic.co)",
+      "WebFetch(domain:www.elastic.co)",
+      "WebFetch(domain:www.elastic.co)",
+      "Bash(source:*)",
+      "Bash(python:*)",
+      "Bash(docker logs:*)"
+    ],
+    "deny": []
+  }
+}
