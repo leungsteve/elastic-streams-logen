@@ -31,9 +31,6 @@ filebeat.inputs:
   data_stream:
     dataset: java-app
     namespace: demo
-  json.keys_under_root: true
-  json.add_error_key: true
-  json.message_key: message
 
 # Kubernetes logs - JSON format
 - type: filestream

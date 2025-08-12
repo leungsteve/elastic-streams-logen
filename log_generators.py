@@ -140,16 +140,22 @@ class JavaAppLogGenerator(LogGenerator):
             "version": "1.2.3"
         }
         
+        # Generate raw structured text format for field extraction demo
+        exception_text = ""
         if level == "ERROR":
             log_entry["exception"] = {
                 "class": "java.sql.SQLException",
                 "message": "Connection timeout after 30000ms",
                 "stack_trace": "java.sql.SQLException: Connection timeout\\n\\tat com.example.repository.OrderRepository.findById(OrderRepository.java:45)"
             }
-            
+            exception_text = f" exception_class=\"java.sql.SQLException\" exception_message=\"Connection timeout after 30000ms\" stack_trace=\"java.sql.SQLException: Connection timeout\\n\\tat com.example.repository.OrderRepository.findById(OrderRepository.java:45)\""
+        
+        # Raw structured text format requiring field extraction
+        raw_log_line = f"{timestamp.isoformat()} [{level:5}] [{thread}] {logger} - {message} correlation_id=\"{correlation_id}\" host=\"{host_info['name']}\" service=\"user-service\" version=\"1.2.3\"{exception_text}"
+        
         return {
             'timestamp': timestamp.isoformat(),
-            'log_line': json.dumps(log_entry),
+            'log_line': raw_log_line,
             'fields': log_entry
         }
     
